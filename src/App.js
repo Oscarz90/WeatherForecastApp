@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
+import WeatherCard from './components/WeatherCard';
 
 class App extends React.Component{
 
@@ -22,6 +23,7 @@ class App extends React.Component{
                   Weather Forecast
                 </Typography>
               </Grid>
+              <WeatherCard/>
               <Grid
                 container
                 direction="column"
