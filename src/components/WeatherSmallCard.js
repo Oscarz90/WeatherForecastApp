@@ -17,11 +17,9 @@ export default class CardWeather extends React.Component{
   render(){
     const { 
       day
-      , weatherDescription
       , tempMin
       , tempMax
       , tempScale 
-      , icon
     } = this.props;
   
     return(
@@ -29,23 +27,22 @@ export default class CardWeather extends React.Component{
         container
         direction="column"
         justify="flex-start"
-        alignItems="stretch">
-        <Typography variant="h5" style={{ color: '#B7B7B7', textAlign: 'center'}}>
+        alignItems="center">
+        <Typography variant="subtitle1" style={{ color: '#B7B7B7', textAlign: 'center'}}>
           { day }
         </Typography>
-        <WeatherIconProvider dayIcon={icon}/>
-        <Typography variant="h4" style={{ color: '#B7B7B7', textAlign: 'center'}}>
-          { weatherDescription }
-        </Typography>
+        <Grid style={{ padding: "0.5em" }}>
+          <WeatherIconProvider dayIcon="50d.png" auto/>
+        </Grid>
         <Grid
           container
           direction="row"
-          justify="center"
+          justify="space-around"
           alignItems="stretch">
-          <Typography variant="h5" style={{ color: '#B7B7B7', textAlign: 'center', paddingRight: '0.3em'}}>
+          <Typography variant="body1" style={{ color: '#B7B7B7', textAlign: 'center'}}>
             {`${tempMax} °${tempScale}`}
           </Typography>
-          <Typography variant="h5" style={{ color: '#D7D7D7', textAlign: 'center', paddingLeft: '0.3em'}}>
+          <Typography variant="body1" style={{ color: '#D7D7D7', textAlign: 'center'}}>
             {`${tempMin} °${tempScale}`}
           </Typography>
         </Grid>

@@ -9,80 +9,130 @@ import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
-import WeatherCard from './components/WeatherCard';
+import WeatherCard from '@/components/WeatherCard';
+import WeatherSmallCard from '@/components/WeatherSmallCard';
+import WeatherForecastService from '@/services/weather-forecast';
+import moment from 'moment';
+import Paper from '@material-ui/core/Paper';
+import InputBase from '@material-ui/core/InputBase';
+import IconButton from '@material-ui/core/IconButton';
+import SearchIcon from '@material-ui/icons/Search';
 
 class App extends React.Component{
 
+  async componentDidMount(){
+    try{
+      await this.get5DaysWeatherForecast();
+    }catch(error){
+      console.error(error)
+    }
+  }
+
+  async get5DaysWeatherForecast(){
+    try{
+      const response = await WeatherForecastService.get5day('London');
+      const days= []
+      const daySet= new Set();
+      response.data.list.map(item=>{
+        const day= moment(item.dt_txt).format("YYYY-MM-DD")
+        if(!daySet.has(day)){
+          daySet.add(day)
+          days.push(item)
+        }
+      })
+      console.log(days.slice(0,5))
+      
+    }catch(error){
+      console.error(error)
+    }
+  }
+
   render(){
     return (
-      <Container maxWidth="sm" style={{ paddingTop: 18 }}>
-          <form>
-            <Grid container spacing={3}>  
-              <Grid item xs={12}>
-                <Typography variant="h4" style={{ textAlign: 'center', color: '#939393'}}>
-                  Weather Forecast
-                </Typography>
+      <Container maxWidth="sm" style={{ paddingTop: 18 }}>  
+        <Grid 
+          container 
+          spacing={5}
+          direction="column"
+          justify="center"
+          alignItems="stretch">  
+          <Grid item xs={12}>
+            <Typography variant="h4" style={{ textAlign: 'center', color: '#939393'}}>
+              Weather Forecast
+            </Typography>
+          </Grid>
+          <WeatherCard
+            day="Tuesday"
+            icon="02d.png"
+            weatherDescription="Party cloud"
+            tempMin="46"
+            tempMax="76"
+            tempScale="F"
+          />
+          <Grid item xs={12}>
+            <Grid container spacing={0}>
+              <Grid item xs={3}>
+                <WeatherSmallCard
+                  day="Tuesday"
+                  tempMin="46"
+                  tempMax="76"
+                  tempScale="F"
+                />
               </Grid>
-              <WeatherCard/>
-              <Grid
-                container
-                direction="column"
-                justify="flex-start"
-                alignItems="stretch">
-                <Typography variant="h5" style={{ color: '#B7B7B7', textAlign: 'center'}}>
-                  Monday
-                </Typography>
-                <img src={imageForecast} alt="logo" style={{ height: '30vmin'}}/>
-                <Typography variant="h4" style={{ color: '#B7B7B7', textAlign: 'center'}}>
-                  Party cloud
-                </Typography>
-                <Grid
-                  container
-                  direction="row"
-                  justify="center"
-                  alignItems="stretch">
-                  <Typography variant="h5" style={{ color: '#B7B7B7', textAlign: 'center', paddingRight: '0.5em' }}>
-                    79°
-                  </Typography>
-                  <Typography variant="h5" style={{ color: '#B7B7B7', textAlign: 'center', paddingLeft: '0.5em'}}>
-                    80°
-                  </Typography>
-                </Grid>
+              <Grid item xs={3}>
+                <WeatherSmallCard
+                  day="Tuesday"
+                  tempMin="46"
+                  tempMax="76"
+                  tempScale="F"
+                />
               </Grid>
-              <Grid item xs={12}>
-                <Grid container>
-                  <Grid item xs={3}>
-                    <h6>hello madafaker!</h6>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <h6>hello madafaker!</h6>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <h6>hello madafaker!</h6>
-                  </Grid>
-                  <Grid item xs={3}>
-                    <h6>hello madafaker!</h6>
-                  </Grid>
-                </Grid>
+              <Grid item xs={3}>
+                <WeatherSmallCard
+                  day="Tuesday"
+                  tempMin="46"
+                  tempMax="76"
+                  tempScale="F"
+                />
               </Grid>
-              <Grid item xs={12}>
-                <Divider/>
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  id="standard-full-width"
-                  label="Find your city"
-                  placeholder="Placeholder"
-                  helperText="Type your city's name"
-                  fullWidth
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+              <Grid item xs={3}>
+                <WeatherSmallCard
+                  day="Tuesday"
+                  tempMin="46"
+                  tempMax="76"
+                  tempScale="F"
                 />
               </Grid>
             </Grid>
-          </form>
+          </Grid>
+          <Grid item xs={12}>
+            <Divider/>
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              id="standard-full-width"
+              label="Find your city"
+              placeholder="Placeholder"
+              helperText="Type your city's name"
+              fullWidth
+              error
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Paper style={{ display: 'flex', padding: '0.3em 0.3em', alignItems: 'space-between' }}>
+            <InputBase
+              placeholder="Search Google Maps"
+              inputProps={{ 'aria-label': 'search google maps' }}
+              style={{ flex: 1 }}
+            />
+            <IconButton aria-label="search" onClick={()=>{ console.log("i was pressed") }}>
+              <SearchIcon />
+            </IconButton>
+          </Paper>
+        </Grid>
       </Container>
     );
   }
