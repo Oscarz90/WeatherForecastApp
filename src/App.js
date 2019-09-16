@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import WeatherForecast from './containers/WeatherForecast';
+import Container from '@material-ui/core/Container';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+/**
+ * 
+ * Main App Container
+ * 
+ * @extends React.Component
+ */
+export default class App extends React.Component{
+
+  render(){
+    return (
+      <Container 
+        maxWidth="sm" 
+        style={styles.container}>  
+        <WeatherForecast/>
+      </Container>
+    );
+  }
 }
 
-export default App;
+const styles= {
+  container: {
+    paddingTop: 18
+  }
+}
