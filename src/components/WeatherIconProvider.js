@@ -1,38 +1,33 @@
-/* eslint-disable */
 import React from 'react';
-import IconsMap from '@/configuration/constants/WeatherIconsMap';
+import PropTypes from 'prop-types';
+import WeatherIconsMap from '@/configuration/constants/WeatherIconsMap';
 
+/**
+ * 
+ * Component to provide the icon for the given 
+ * 
+ * @property {boolean} auto - The property to auto size the image to its parent container
+ * @property {string} dayIcon - The icon name 
+ * 
+ */
 export default class WeatherIconProvider extends React.Component{
-  
-  constructor(props){
-    super(props)
-    const { dayIcon }= this.props;
-    
-    //TODO: set a default icon
-    let icon;
 
-    if(!!this.props.dayIcon){
-      const dayWithoutExtension= dayIcon.split(".")[0];
-      
-      if(IconsMap[dayWithoutExtension])
-        icon= IconsMap[dayWithoutExtension].uri.svg
+  getDayIconName(dayIcon){
+    const dayWithoutExtension= dayIcon.split(".")[0];
+    if(!!dayIcon && !!WeatherIconsMap[dayWithoutExtension]){
+      return WeatherIconsMap[dayWithoutExtension].uri.svg
     }
-    
-    //Set the state
-    this.state= {
-      dayIcon: icon
-    }
-    
+    return "";
   }
 
   render(){
-    const { dayIcon }= this.state;
-    const { auto }= this.props;
-    //const file= `@/assets/img/${dayIcon}`
+    const { auto, dayIcon }= this.props;
+    const icon= this.getDayIconName(dayIcon);
+    
     return(
       <img 
-        src= {dayIcon} 
-        style= { !!auto? styles.auto : styles.fixed}
+        src= {icon} 
+        style= {!!auto? styles.auto : styles.fixed}
         alt= "logo"
       />
     )
@@ -40,7 +35,6 @@ export default class WeatherIconProvider extends React.Component{
 
 }
 
-//
 const styles= {
   fixed: {
     height: "30vmin"
@@ -50,3 +44,13 @@ const styles= {
     , height: "auto"
   }
 }
+
+WeatherIconProvider.propTypes= {
+  dayIcon: PropTypes.string
+  , auto: PropTypes.bool
+}
+
+WeatherIconProvider.defaultProps = {
+  auto: false
+  , dayIcon: ''
+};
